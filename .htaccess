@@ -1,0 +1,6 @@
+#Escritura de rutas
+RewriteEngine on
+Options All -Indexes
+RewriteCond %{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png)$ [NC]
+RewriteCond %{REQUEST_URI}\%{REQUEST_URI} !\.(?:css|js|jpe?g|gif|png)$ [NC]
+RewriteRule ^(.*)$ index.php?x=$1 [L,QSA]
