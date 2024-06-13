@@ -2,7 +2,7 @@
     date_default_timezone_set('America/Mexico_City');
     require_once 'backend/db/model/mdlRol.php';
     require_once "backend/repository/admin/rstRol.php";
-    require_once "backend/config/ws.php";
+    require_once "backend/config/core/ws.php";
 
     class outRol{
         private $rol;
