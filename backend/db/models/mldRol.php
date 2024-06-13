@@ -2,18 +2,18 @@
 class mdlRol {
     
 
-	private Int $id;
+    private ?Int $id;
     private String $rol;
     private Int $estatus;
     private String $um;
-    private String $fm;
+    private ?String $fm;
 
-    public function __construct(Int $id, String $rol, Int $estatus, String $um, String $fm){
-        $this->id = $id;
-        $this->rol = $rol;
-        $this->estatus = $estatus;
-        $this->um = $um;
-        $this->fm = $fm;
+    public function __construct(String $rol, ?Int $id = null, Int $estatus = null, String $um = null, ?String $fm = null) {
+        $this->id       = $id;
+        $this->rol      = $rol;
+        $this->estatus  = $estatus;
+        $this->um       = $um;
+        $this->fm       = $fm;
     }
 
     public function getId(): Int {return $this->id;}
