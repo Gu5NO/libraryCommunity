@@ -19,9 +19,8 @@ $request = explode('/',$uri);
                AUTH
     ---------------------------------------------------------------*/
     else if($request[2] == 'auth'){
-        echo $request;
-        /*require_once 'routers/auth/auth.php';
-        $libraryCommunity = new $request[2]();*/
+        require_once 'routers/auth/auth.php';
+        $libraryCommunity = new $request[2]();
     }
     /*------------------------------------------------------------
                 ADMINISTRADOR
