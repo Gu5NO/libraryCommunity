@@ -33,30 +33,25 @@
         }
         // VALIDACIÓN DE LAS VISTAS
         // SESSION Y TIPO ROL
-        public function routers($method,$request,$private,$session){
+        public function routers($private,$session){
             $resp = [];
-            
-            if($method === $request){
-                if($private){
-                    $validation = new Validation();
-                    if((isset($session['token']) && !empty($session['token'])) && ($validation->validarSession(base64_decode($session['token'])))){
-                        $resp['status'] = true;
-                        $resp['code']   = 202;
-                        $resp['msg']    = "Accepted";
-                    }else{
-                        $resp['status'] = false;
-                        $resp['code']   = 401;
-                        $resp['msg']    = "Necesita iniciar sesión para consumir el servicio";        
-                    }
-                }else{
+            if($private){
+                echo "Entre a metodo con sesión <br>";
+                $validation = new Validation();
+                if((isset($session['token']) && !empty($session['token'])) && ($validation->validarSession(base64_decode($session['token'])))){
                     $resp['status'] = true;
                     $resp['code']   = 202;
                     $resp['msg']    = "Accepted";
+                }else{
+                    var_dump("Entre al Necesitas una sessión par consumir el servicio");
+                    $resp['status'] = false;
+                    $resp['code']   = 401;
+                    $resp['msg']    = "Necesita iniciar sesión para consumir el servicio";        
                 }
             }else{
-                $resp['status'] = false;
-                $resp['code']   = 405;
-                $resp['msg']    = "Método no permitido";
+                $resp['status'] = true;
+                $resp['code']   = 202;
+                $resp['msg']    = "Accepted";
             }
             return $resp;
         }

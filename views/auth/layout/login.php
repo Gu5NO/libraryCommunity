@@ -13,7 +13,7 @@
                                    <div class="brand-logo">
                                         <img src="<?php echo $base_url;?>/views/content/img/logo.png" alt="logo" />
                                    </div>
-                                   <h4>Library Community</h4>
+                                   <h4><?= $title; ?></h4>
                                    <form class="pt-3" id="frmLogin" name="frmLogin" role="form" method="post" novalidate data-parsley-validate>
                                         <div class="form-group">
                                              <input
@@ -59,7 +59,7 @@
                                              <a href="#" class="auth-link text-black">¿Deseas reestablecer la contraseña?</a>
                                         </div>
 
-                                        <div class="text-center mt-4 fw-light">¿No tienes cuenta? <a href="register.html" class="text-primary">Crear Cuenta</a></div>
+                                        <div class="text-center mt-4 fw-light">¿No tienes cuenta? <a href="register" class="text-primary">Crear Cuenta</a></div>
                                    </form>
                               </div>
                          </div>
@@ -76,8 +76,8 @@
 ?>
 
 <script>
-	  var scriptElement = document.createElement('script');
-    scriptElement.src = '../views/auth/resource/key/index.js';
+	const scriptElement = document.createElement('script');
+    scriptElement.src = '../views/auth/resource/key/auth.js';
     scriptElement.onload = function() {
     };
     scriptElement.onerror = function() {

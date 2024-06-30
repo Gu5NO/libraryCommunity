@@ -1,30 +1,30 @@
 <?php
-    include("rest/class/validation/validation.php");
+    include("rest/class/api/ws.php");
     class restAuth{
-        
         //private $url 	= 'http://10.16.20.182/DevsCodeTotal/Api/index.php/';        
         //private $url 	= 'http://192.168.0.12/DevsCodeTotal/Api/index.php/';        
-        private $url 	= 'http://localhost/libraryCommunity/Api/index.php/';        
-        
-        function generarToken(){
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-                $param = file_get_contents('php://input');
-                $p = json_decode($param, true);
-                $post   = [
-                            'IPPUBLICA'  => $p['ipPublica'],
-                            'IPINTERNA'  => $p['ipInterna'],
-                            'PAGINA'     => 'LOGIN',
-                ];
-                $resp   = $this->_ConsultaPostSinToken('auth/Token/obtToken',$post);
-                echo $resp; 
-            }else{
-                http_response_code(405);
-                header('Content-Type: application/json');
-                echo json_encode(array("mensaje" => "Método no permitido"));
-                exit;
-            }    
+        private $url 	= 'http://localhost/libraryCommunity/Api/index.php/';                
+       
+    function generarToken() {
+        $ws = new WS();
+        $app = $ws->application('POST', $_SERVER['REQUEST_METHOD'], false, null);
+        if ($app['status'] === true) {
+            $param = file_get_contents('php://input');
+            $p = json_decode($param, true);
+            $post = [
+                'IPPUBLICA' => empty($p['ipPublica'])? null : $p['ipPublica'],
+                'IPINTERNA' => empty($p['ipInterna'])? null:$p['ipInterna'],
+                'PAGINA'    => 'LOGIN',
+            ];
+            $resp = $this->_ConsultaPostSinToken('Token/obtToken', $post);
+            echo $resp;
+        } else {
+            http_response_code($app['code']);
+            header('Content-Type: application/json');
+            echo json_encode(array("mensaje" => $app['msg']));
+            exit;
         }
-
+    }
         function iniciarSesion(){
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $param = file_get_contents('php://input');
@@ -34,7 +34,7 @@
                         'CONTRA'    => $p['contra'],
                         'TOKEN'     => $p['token']
                     ];
-                    $resp = $this->_ConsultaPostToken('auth/Auth/iniciarSesion',$post);
+                    $resp = $this->_ConsultaPostToken('Tokn/iniciarSesion',$post);
                     $resp = json_decode($resp);   
                     if($resp->status == true){
                         $this->_generarSession($resp->datos);
@@ -72,21 +72,23 @@
             // Pasar los datos a la opción CURLOPT_POSTFIELDS
 				        curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
 	        $output = 	curl_exec($ch); 
-	        curl_close($ch);    
+	                    curl_close($ch);    
 	        if($r) return $output;
 	        else return $output;
         }
 
-        function _ConsultaPostSinToken($metodo,$post, $r = false){
-			$ch 	= 	curl_init(); 
-						curl_setopt($ch, CURLOPT_URL, $this->url.$metodo); 
-						curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE); 
-						curl_setopt($ch, CURLOPT_POSTFIELDS, $post);
-			$output = 	curl_exec($ch); 
-						curl_close($ch);       
-	        if($r) return $output;
-	        else return $output;
-	    }
+        function _ConsultaPostSinToken($metodo, $post, $r = false) {
+            $ch = curl_init();
+            curl_setopt($ch, CURLOPT_URL, $this->url . $metodo);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, TRUE);
+            curl_setopt($ch, CURLOPT_POST, TRUE); // Establecer como solicitud POST
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($post)); // Convertir array a cadena de consulta
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/x-www-form-urlencoded')); // Establecer tipo de contenido
+            $output = curl_exec($ch);
+            curl_close($ch);
+            if ($r) return $output;
+            else return $output;
+        }
 
 	    private function _generarSession($respuesta){ 
             session_start();    

@@ -4,7 +4,8 @@
     class Validation{
         public function validarSession($token){
             $security = new Security();
-            $info = json_decode($security->decodificar($token));
+            $info = json_decode($security->decodificar($token));    
+            echo var_dump($info);
             $horaActual = date('Y-m-d H:i:s');
             $dateTimeHoraActual  = new DateTime($horaActual);
             $dateTimeHoraProporcionada = new DateTime($info->exp);

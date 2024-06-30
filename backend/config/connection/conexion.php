@@ -9,9 +9,9 @@
         public function __construct()
         {
             $this->host         = "localhost";
-            $this->dbname       = "libraryCommunity";
+            $this->dbname       = "librarycommunity";
             $this->username     = "root";
-            $this->password     = "";
+            $this->password     = "es@u4lv4";
             $this->charset      = "utf8";
             
             $dsn = "mysql:host={$this->host};dbname={$this->dbname};charset={$this->charset}";
